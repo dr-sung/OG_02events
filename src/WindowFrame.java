@@ -1,4 +1,5 @@
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,48 +9,30 @@ import javax.swing.JTextField;
 
 public class WindowFrame extends JFrame {
 
+    private JButton buttonSouth;
+    private JTextField textFieldNorth;
+
     public void initialize() {
 
         setTitle("Text input test");
         setSize(300, 300); // frame size
 
         textFieldNorth = new JTextField();
-        textFieldNorth.setEditable(false); // read only
         buttonSouth = new JButton("I am a button");
-
 
         // contentPane's default layout: BorderLayout
         Container contentPane = getContentPane();
-        contentPane.add(textFieldNorth, "North");
-        contentPane.add(buttonSouth, "South");
+        contentPane.add(textFieldNorth, BorderLayout.NORTH);
+        contentPane.add(buttonSouth, BorderLayout.SOUTH);
 
-        // Observer design pattern
-        // ConcreteSubject: JTextField
-        // Observer: ActionListener
-        textFieldNorth.addActionListener(new TextListener());
-        buttonSouth.addActionListener(new ButtonListener());
+        textFieldNorth.addActionListener(event -> {
+            System.out.println("Enter is pressed on TextField. Value = "
+                    + textFieldNorth.getText());
+        });
+        
+        buttonSouth.addActionListener(event -> {
+            textFieldNorth.setText("Button is pressed");
+        });
     }
 
-    // ConcreteObserver
-    private class ButtonListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            System.out.println("The button is pressed.");
-        }
-    }
-
-    // ConcreteObserver
-    private class TextListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            String textTyped = textFieldNorth.getText();
-            System.out.println("You typed in NORTH = " + textTyped);
-        }
-    }
-    
-    private JButton buttonSouth;
-    private JTextField textFieldNorth;
-    
 }
